@@ -1,6 +1,6 @@
 {
   "name": "tunnel.now",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Forward Zeit.now aliases to your localhost server.",
   "scripts": {
     "start": "node src/server.js",
