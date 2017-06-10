@@ -4,6 +4,10 @@
   "description": "Forward Zeit.now aliases to your localhost server.",
   "scripts": {
     "start": "node src/server/index.js",
+    "now-start": "node src/server/index.js"
+  },
+  "bin": {
+    "tunnel.now": "./src/tunnel/index.js"
   },
   "repository": {
     "type": "git",
