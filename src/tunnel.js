@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const yargs = require("yargs");
 const WebSocket = require("ws");
 const { default: fetch, Headers } = require("node-fetch");
