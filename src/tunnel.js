@@ -11,9 +11,18 @@ const {
 
 
 const { _: [ remoteHostname, localPort ] } = yargs
-  .usage('$0 <remote-hostname> <local-port>')
+  .usage('tunnel.now <remote-hostname> <local-port>')
   .help()
   .argv;
+
+if (!remoteHostname) {
+  console.error("You must supply a name for a remote host, listening on port 443.");
+  process.exit(1);
+}
+if (!localPort) {
+  console.error("You must indicate which local port that requests should be forwarded to.");
+  process.exit(1);
+}
 
 const baseTargetUrl = `http://localhost:${localPort}`;
 
