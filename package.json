@@ -7,7 +7,8 @@
     "now-start": "node src/server.js"
   },
   "bin": {
-    "tunnel.now": "./src/tunnel.js"
+    "tunnel.now": "./src/tunnel.js",
+    "tunnel.deploy": "./src/deploy.js"
   },
   "repository": {
     "type": "git",
@@ -29,6 +30,7 @@
   "homepage": "https://github.com/divmain/tunnel.now#readme",
   "dependencies": {
     "cereal-box": "^1.0.0",
+    "execa": "^0.7.0",
     "node-fetch": "^1.7.1",
     "raw-body": "^2.2.0",
     "ws": "^3.0.0",
