@@ -2,9 +2,8 @@
   "name": "tunnel.now",
   "version": "0.1.0",
   "description": "Forward Zeit.now aliases to your localhost server.",
-  "main": "src/index.js",
   "scripts": {
-    "now-start": "node src/index.js server"
+    "start": "node src/server/index.js",
   },
   "repository": {
     "type": "git",
