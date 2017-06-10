@@ -1,0 +1,34 @@
+{
+  "name": "tunnel.now",
+  "version": "0.1.0",
+  "description": "Forward Zeit.now aliases to your localhost server.",
+  "main": "src/index.js",
+  "scripts": {
+    "now-start": "node src/index.js server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/divmain/tunnel.now.git"
+  },
+  "keywords": [
+    "zeit",
+    "now",
+    "localhost",
+    "tunnel",
+    "http",
+    "https"
+  ],
+  "author": "Dale Bustad <dale@divmain.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/divmain/tunnel.now/issues"
+  },
+  "homepage": "https://github.com/divmain/tunnel.now#readme",
+  "dependencies": {
+    "cereal-box": "^1.0.0",
+    "node-fetch": "^1.7.1",
+    "raw-body": "^2.2.0",
+    "ws": "^3.0.0",
+    "yargs": "^8.0.1"
+  }
+}
