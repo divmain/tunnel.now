@@ -15,8 +15,7 @@ const { _: [ remoteHostname, localPort ] } = yargs
 
 const baseTargetUrl = `http://localhost:${localPort}`;
 
-const uri = `ws://localhost:8008`;
-// const uri = `wss://${remoteHostname}:443`;
+const uri = `wss://${remoteHostname}:443`;
 const socket = new WebSocket(uri);
 
 socket.addEventListener("open", () => {
