@@ -5,7 +5,7 @@ const { default: fetch, Headers } = require("node-fetch");
 const {
   request: { decode: decodeRequest },
   response: { encode: encodeResponse }
-} = require("../codec");
+} = require("./codec");
 
 
 const { _: [ remoteHostname, localPort ] } = yargs

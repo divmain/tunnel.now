@@ -7,7 +7,7 @@ const getRawBody = require("raw-body");
 const {
   request: { encode: encodeRequest },
   response: { decode: decodeResponse }
-} = require("../codec");
+} = require("./codec");
 
 
 const { _: [ port = 8008 ] } = yargs
