@@ -41,6 +41,7 @@ const server = createServer((req, res) => {
 });
 
 const handleResponse = message => {
+  if (message === "PING") { return; }
   const { id, statusCode, headers, body } = decodeResponse(message);
   const res = responseRefs[id];
   responseRefs[id] = null;

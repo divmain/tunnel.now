@@ -63,7 +63,12 @@ socket.addEventListener("message", ev => {
   });
 });
 
+const keepAliveId = setInterval(() => {
+  socket.send("PING");
+}, 60000);
+
 socket.addEventListener("close", () => {
+  clearInterval(keepAliveId);
   console.log("The connection has been terminated.");
 });
 
