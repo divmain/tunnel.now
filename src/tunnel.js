@@ -48,7 +48,8 @@ socket.addEventListener("message", ev => {
   fetch(`${baseTargetUrl}${url}`, {
     method,
     headers,
-    body: Buffer.from(body.buffer),
+    // Alternately, `Buffer.from(body.slice().buffer)`.
+    body: Buffer.from(body.buffer, body.byteOffset, body.length),
     redirect: "manual"
   }).then(response => {
     return response.buffer().then(body => {

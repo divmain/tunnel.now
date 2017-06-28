@@ -47,7 +47,8 @@ const handleResponse = message => {
 
   res.statusCode = statusCode;
   Object.keys(headers).forEach(key => res.setHeader(key, headers[key]));
-  res.end(Buffer.from(body.slice().buffer));
+  // Alternately, `Buffer.from(body.slice().buffer)`.
+  res.end(Buffer.from(body.buffer, body.byteOffset, body.length));
 };
 
 const wsServer = new WebSocket.Server({ server });
