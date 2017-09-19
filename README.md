@@ -2,7 +2,7 @@
 
 Zeit's [now](https://zeit.co/now) platform is fantastic for rapid iteration on Node.js projects.  But sometimes - when debugging a webhook, for example - you might want to run your project on your development machine, somehow handling the requests from there.
 
-Of course, you _could_ make changes, deploy to `now`, and update the alias as you go.  However, this project provides an alternative for those times when you want a faster iteration cycle before deploying a final version to the cloud: it tunnels HTTP requests that are sent to a `now` to your local dev machine.
+Of course, you _could_ make changes, deploy to `now`, and update the alias as you go.  However, this project provides an alternative for those times when you want a faster iteration cycle before deploying a final version to the cloud: it tunnels HTTP requests that are sent to `now` to your local dev machine.
 
 ## Quick start
 
@@ -48,7 +48,7 @@ Done!
 
 Note that this deployment can be re-used however many times you'd like.
 
-**Step 3: Start your application server**
+**Step 4: Start your application server**
 
 In your project, do whatever you need to do to start your server, and take note of the port that is opened:
 
@@ -59,7 +59,7 @@ Listening on port 8080...
 
 In this case, that's port `8080`.
 
-**Step 4: In a separate terminal, start your tunnel**
+**Step 5: In a separate terminal, start your tunnel**
 
 `tunnel.now` takes two arguments:
 
@@ -72,7 +72,7 @@ Connected to wss://my-alias.now.sh:443.
 Tunneling requests to http://localhost:8080...
 ```
 
-**Step 5: Open your browser!**
+**Step 6: Open your browser!**
 
 Any HTTP requests made to the `now` hostname or alias will be tunneled to your local machine.
 
