@@ -28,7 +28,7 @@ if (!localPort) {
 const baseTargetUrl = `http://localhost:${localPort}`;
 
 const parsed_remote = url.parse( remote );
-const uri = `${ parsed_remote.protocol === 'http:' ? 'ws:' : 'wss:' }//${ parsed_remote.hostname }:${ parsed_remote.port || ( parsed_remote.protocol === 'http:' ? 80 : 443 ) }`;
+const uri = `${ parsed_remote.protocol === 'http:' ? 'ws:' : 'wss:' }//${ parsed_remote.hostname || parsed_remote.href }:${ parsed_remote.port || ( parsed_remote.protocol === 'http:' ? 80 : 443 ) }`;
 console.log( `Connecting to ${uri}...` );
 const ws = new WebSocket(uri);
 
