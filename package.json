@@ -30,10 +30,10 @@
   "homepage": "https://github.com/divmain/tunnel.now#readme",
   "dependencies": {
     "cereal-box": "^1.0.0",
-    "execa": "^0.7.0",
-    "node-fetch": "^1.7.1",
-    "raw-body": "^2.2.0",
-    "ws": "^3.0.0",
-    "yargs": "^8.0.1"
+    "execa": "^0.10.0",
+    "node-fetch": "^2.2.0",
+    "raw-body": "^2.3.3",
+    "ws": "^6.0.0",
+    "yargs": "^12.0.1"
   }
 }

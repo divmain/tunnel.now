@@ -24,6 +24,7 @@ const server = createServer((req, res) => {
   if (!activeConnection) {
     res.statusCode = 503;
     res.end("Tunneling client is not currently connected.");
+    return;
   }
 
   getRawBody(req).then(buffer => {
@@ -44,7 +45,7 @@ const handleResponse = message => {
   if (message === "PING") { return; }
   const { id, statusCode, headers, body } = decodeResponse(message);
   const res = responseRefs[id];
-  responseRefs[id] = null;
+  delete responseRefs[id];
 
   res.statusCode = statusCode;
   Object.keys(headers).forEach(key => res.setHeader(key, headers[key]));
