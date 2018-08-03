@@ -16,7 +16,7 @@ const { _: [ remote, localPort ], debug } = yargs
     alias: 'd',
     default: false
   })
-  .usage('tunnel.now [--debug] <remote> <local-port>')
+  .usage('tunnel.now [--debug|-d] <remote> <local-port>')
   .help()
   .argv;
 
@@ -106,12 +106,7 @@ ws.on("message", ev => {
 } );
 });
 
-const keepAliveId = setInterval(() => {
-  ws.send("PING");
-}, 60000);
-
 ws.on("close", () => {
-  clearInterval(keepAliveId);
   console.log("The connection has been terminated.");
 });
 
