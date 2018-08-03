@@ -71,7 +71,7 @@ ws.on("message", ev => {
     options.body = Buffer.from(body.buffer, body.byteOffset, body.length);
   }
 
-  fetch(`${baseTargetUrl}${url}`, ).then(response => {
+  fetch(`${baseTargetUrl}${url}`, options).then(response => {
     return response.buffer().then(body => {
       ws.send(encodeResponse({
         id,
