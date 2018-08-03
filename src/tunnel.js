@@ -11,8 +11,12 @@ const {
 } = require("./codec");
 
 
-const { _: [ remote, localPort ] } = yargs
-  .usage('tunnel.now <remote> <local-port>')
+const { _: [ remote, localPort ], debug } = yargs
+  .option('debug', {
+    alias: 'd',
+    default: false
+  })
+  .usage('tunnel.now [--debug] <remote> <local-port>')
   .help()
   .argv;
 
@@ -47,11 +51,14 @@ ws.on("message", ev => {
   } = decodeRequest(ev);
 
   console.log(`> ${method} ${url}`);
-  console.log(`> headers: ` );
-  console.dir( headers );
-  console.log( `>` );
-  console.log( `> body:` );
-  console.log( Buffer.isBuffer( body ) && body.length ? body.toString() : '<none>' );
+
+  if( debug ) {
+    console.log(`> headers: ` );
+    console.dir( headers );
+    console.log( `>` );
+    console.log( `> body:` );
+    console.log( Buffer.isBuffer( body ) && body.length ? body.toString() : '<none>' );
+  }
 
   const options = {
     method,
