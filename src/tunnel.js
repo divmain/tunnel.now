@@ -2,7 +2,8 @@
 
 const yargs = require("yargs");
 const WebSocket = require("ws");
-const { default: fetch, Headers } = require("node-fetch");
+const fetch = require("node-fetch");
+const url = require( 'url' );
 
 const {
   request: { decode: decodeRequest },
@@ -10,13 +11,17 @@ const {
 } = require("./codec");
 
 
-const { _: [ remoteHostname, localPort ] } = yargs
-  .usage('tunnel.now <remote-hostname> <local-port>')
+const { _: [ remote, localPort ], debug } = yargs
+  .option('debug', {
+    alias: 'd',
+    default: false
+  })
+  .usage('tunnel.now [--debug|-d] <remote> <local-port>')
   .help()
   .argv;
 
-if (!remoteHostname) {
-  console.error("You must supply a name for a remote host, listening on port 443.");
+if (!remote) {
+  console.error("You must supply a url for the remote tunnel.");
   process.exit(1);
 }
 if (!localPort) {
@@ -26,53 +31,87 @@ if (!localPort) {
 
 const baseTargetUrl = `http://localhost:${localPort}`;
 
-const uri = `wss://${remoteHostname}:443`;
-const socket = new WebSocket(uri);
+const parsed_remote = url.parse( remote );
+const uri = `${ parsed_remote.protocol === 'http:' ? 'ws:' : 'wss:' }//${ parsed_remote.hostname || parsed_remote.href }:${ parsed_remote.port || ( parsed_remote.protocol === 'http:' ? 80 : 443 ) }`;
+console.log( `Connecting to ${uri}...` );
+const ws = new WebSocket(uri);
 
-socket.addEventListener("open", () => {
+ws.on("open", () => {
   console.log(`Connected to ${uri}.`);
   console.log(`Tunneling requests to ${baseTargetUrl}...`);
 });
 
-socket.addEventListener("message", ev => {
+ws.on("message", ev => {
   const {
     id,
     url,
     method,
     headers,
     body
-  } = decodeRequest(ev.data);
+  } = decodeRequest(ev);
 
   console.log(`> ${method} ${url}`);
 
-  fetch(`${baseTargetUrl}${url}`, {
+  if( debug ) {
+    console.log(`> headers: ` );
+    console.dir( headers );
+    console.log( `>` );
+    console.log( `> body:` );
+    console.log( Buffer.isBuffer( body ) && body.length ? body.toString() : '<none>' );
+  }
+
+  const options = {
     method,
     headers,
-    // Alternately, `Buffer.from(body.slice().buffer)`.
-    body: Buffer.from(body.buffer, body.byteOffset, body.length),
     redirect: "manual"
-  }).then(response => {
+  };
+
+  if ( Buffer.isBuffer( body ) && body.length ) {
+    // Alternately, `Buffer.from(body.slice().buffer)`.
+    options.body = Buffer.from(body.buffer, body.byteOffset, body.length);
+  }
+
+  fetch(`${baseTargetUrl}${url}`, options).then(response => {
     return response.buffer().then(body => {
-      socket.send(encodeResponse({
+      ws.send(encodeResponse({
         id,
         statusCode: response.status,
-        headers: response.headers,
+        headers: response.headers.raw(),
         body
       }));
     });
-  });
+  }).catch( error => {
+    if ( error.code === 'ECONNREFUSED' ) {
+        ws.send(encodeResponse({
+          id,
+          statusCode: 503,
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: Buffer.from( JSON.stringify( {
+            error: 'Connection refused by tunneled host.'
+          } ) )
+        }));
+        return;
+    }
+
+    ws.send(encodeResponse({
+      id,
+      statusCode: 500,
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: Buffer.from( JSON.stringify( error ) )
+    }));
+} );
 });
 
-const keepAliveId = setInterval(() => {
-  socket.send("PING");
-}, 60000);
-
-socket.addEventListener("close", () => {
-  clearInterval(keepAliveId);
+ws.on("close", () => {
   console.log("The connection has been terminated.");
 });
 
-socket.addEventListener("error", ev => {
+ws.on("error", ev => {
+  console.dir(ev);
   if (ev.code === "ECONNREFUSED") {
     console.log("We were unable to establish a connection with the server.");
   } else {
