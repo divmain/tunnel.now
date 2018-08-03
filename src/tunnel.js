@@ -48,13 +48,18 @@ ws.on("message", ev => {
 
   console.log(`> ${method} ${url}`);
 
-  fetch(`${baseTargetUrl}${url}`, {
+  const options = {
     method,
     headers,
-    // Alternately, `Buffer.from(body.slice().buffer)`.
-    body: Buffer.from(body.buffer, body.byteOffset, body.length),
     redirect: "manual"
-  }).then(response => {
+  };
+
+  if ( Buffer.isBuffer( body ) && body.length ) {
+    // Alternately, `Buffer.from(body.slice().buffer)`.
+    options.body = Buffer.from(body.buffer, body.byteOffset, body.length);
+  }
+
+  fetch(`${baseTargetUrl}${url}`, ).then(response => {
     return response.buffer().then(body => {
       ws.send(encodeResponse({
         id,
