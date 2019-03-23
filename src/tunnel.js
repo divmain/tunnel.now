@@ -76,6 +76,6 @@ socket.addEventListener("error", ev => {
   if (ev.code === "ECONNREFUSED") {
     console.log("We were unable to establish a connection with the server.");
   } else {
-    console.log(ev.toString());
+    console.log(ev.error.toString());
   }
 });
