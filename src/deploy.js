@@ -31,7 +31,7 @@ const main = async () => {
     .help()
     .argv;
 
-  const { stdout: deployedUrl } = await run("now", "deploy");
+  const { stdout: deployedUrl } = await run("now", "deploy", "-V", "1");
   const hostname = deployedUrl.replace(/https?:\/\//, "");
   console.log(`tunnel.now host has been deployed to ${hostname}`);
   if (alias) {
