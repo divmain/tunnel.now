@@ -35,7 +35,7 @@ const main = async () => {
   const hostname = deployedUrl.replace(/https?:\/\//, "");
   console.log(`tunnel.now host has been deployed to ${hostname}`);
   if (alias) {
-    console.log(`setting alias "${alias}"...\n`);
+    console.log(`Setting alias "${alias}"...\n`);
     await runEcho("now", "alias", "set", hostname, alias);
     console.log("");
   }
