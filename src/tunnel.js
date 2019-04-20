@@ -56,7 +56,7 @@ socket.addEventListener("message", ev => {
       socket.send(encodeResponse({
         id,
         statusCode: response.status,
-        headers: response.headers,
+        headers: response.headers.raw(),
         body
       }));
     });
